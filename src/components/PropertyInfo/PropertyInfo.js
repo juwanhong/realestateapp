@@ -8,7 +8,10 @@ import classes from "./PropertyInfo.module.css";
 class Property extends Component {
   state = {
     id: null,
-    address: [],
+    property: {
+      address: [],
+      mortgage: []
+    }
   };
   componentDidMount() {
     let address = [];
@@ -18,7 +21,14 @@ class Property extends Component {
         value: this.props.address[field],
       });
     }
-    this.setState({ address: address, id: this.props.id });
+    let mortgage = [];
+    for (let field in this.props.mortgage) {
+      mortgage.push({
+        name: field,
+        value: this.props.mortgage[field],
+      });
+    }
+    this.setState({ property: {address: address, mortgage: mortgage}, id: this.props.id });
     console.log(this.props);
   }
 
@@ -34,7 +44,14 @@ class Property extends Component {
   };
 
   render() {
-    const addressOutput = this.state.address.map((field) => {
+    const addressOutput = this.state.property.address.map((field) => {
+      return (
+        <span key={field.key}>
+          {field.name} : {field.value} <br />
+        </span>
+      );
+    });
+    const mortgageOutput = this.state.property.mortgage.map((field) => {
       return (
         <span key={field.key}>
           {field.name} : {field.value} <br />
@@ -47,6 +64,10 @@ class Property extends Component {
         <p>
           Address: <br />
           {addressOutput}
+        </p>
+        <p>
+          Mortgage: <br/>
+          {mortgageOutput}
         </p>
       </div>
     );

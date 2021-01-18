@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import NewData from "./NewData/NewData";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Hoc";
 
 import classes from "./AddNew.module.css";
 

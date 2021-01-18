@@ -5,7 +5,7 @@ import axios from "../../axios-db";
 
 import PropertyInfo from "../../components/PropertyInfo/PropertyInfo";
 import EditProperty from "./EditProperty/EditProperty";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Hoc";
 import Button from "../../components/UI/Button/Button";
 import Modal from "../../components/UI/Modal/Modal";
 import NewData from "../AddNew/NewData/NewData";
@@ -59,6 +59,7 @@ class Manage extends Component {
               key={property.id}
               id={property.id}
               address={property.address}
+              mortgage={property.mortgage}
               pathname={this.props.location.pathname}
             />
             <Button

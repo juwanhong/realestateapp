@@ -7,85 +7,180 @@ import Input from "../../../components/UI/Input/Input";
 class NewData extends Component {
   state = {
     addForm: {
-      nickname: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Nickname",
+      address: {
+        nickname: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Nickname",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        value: "",
-        validation: {
-          required: true,
+        street: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Street",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        valid: false,
-        touched: false,
+        city: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "City",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
+        },
+        zipcode: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Zipcode",
+          },
+          value: "",
+          validation: {
+            required: true,
+            minLength: 5,
+            maxLength: 5,
+          },
+          valid: false,
+          touched: false,
+        },
+        state: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "State",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
+        },
+        revenueMethod: {
+          elementType: "select",
+          elementConfig: {
+            options: [
+              { value: "cashflow", displayValue: "Cashflow" },
+              { value: "appreciation", displayValue: "Appreciation" },
+            ],
+          },
+          value: "cashflow",
+          validation: {},
+          touched: false,
+          valid: true,
+        },
       },
-      street: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Street",
+      mortgage: {
+        price: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Principal",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        value: "",
-        validation: {
-          required: true,
+        downPayment: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Down Payment",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        valid: false,
-        touched: false,
-      },
-      city: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "City",
+        interestRate: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Interest Rate (%)",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        value: "",
-        validation: {
-          required: true,
+        loanLength: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Loan Length (months)",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        valid: false,
-        touched: false,
-      },
-      zipcode: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "Zipcode",
+        taxRate: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Tax Rate (%)",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        value: "",
-        validation: {
-          required: true,
-          minLength: 5,
-          maxLength: 5,
+        additionalCost: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Additional Costs",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        valid: false,
-        touched: false,
-      },
-      state: {
-        elementType: "input",
-        elementConfig: {
-          type: "text",
-          placeholder: "State",
+        additionalPrincipalPayment: {
+          elementType: "input",
+          elementConfig: {
+            type: "text",
+            placeholder: "Additional Principal Payment",
+          },
+          value: "",
+          validation: {
+            required: true,
+          },
+          valid: false,
+          touched: false,
         },
-        value: "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        touched: false,
-      },
-      revenueMethod: {
-        elementType: "select",
-        elementConfig: {
-          options: [
-            { value: "cashflow", displayValue: "Cashflow" },
-            { value: "appreciation", displayValue: "Appreciation" },
-          ],
-        },
-        value: "cashflow",
-        validation: {},
-        touched: false,
-        valid: true,
       },
     },
     formValid: false,
@@ -94,15 +189,23 @@ class NewData extends Component {
   addHandler = (event) => {
     event.preventDefault();
 
-    const formData = {};
-    for (let formElementIdentifier in this.state.addForm) {
-      formData[formElementIdentifier] = this.state.addForm[
+    const addressData = {};
+    for (let formElementIdentifier in this.state.addForm.address) {
+      addressData[formElementIdentifier] = this.state.addForm.address[
+        formElementIdentifier
+      ].value;
+    }
+
+    const mortgageData = {};
+    for (let formElementIdentifier in this.state.addForm.mortgage) {
+      mortgageData[formElementIdentifier] = this.state.addForm.mortgage[
         formElementIdentifier
       ].value;
     }
 
     const newProperty = {
-      address: formData,
+      address: addressData,
+      mortgage: mortgageData,
     };
 
     axios
@@ -130,12 +233,13 @@ class NewData extends Component {
     return isValid;
   }
 
-  inputChangedHandler = (event, inputIdentifier) => {
-    const updatedAddForm = {
+  inputChangedHandler = (event, type, inputIdentifier) => {
+    let updatedAddForm = {
       ...this.state.addForm,
     };
+
     const updatedFormElement = {
-      ...updatedAddForm[inputIdentifier],
+      ...updatedAddForm[type][inputIdentifier],
     };
     updatedFormElement.value = event.target.value;
 
@@ -144,11 +248,11 @@ class NewData extends Component {
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
-    updatedAddForm[inputIdentifier] = updatedFormElement;
+    updatedAddForm[type][inputIdentifier] = updatedFormElement;
 
     let formValid = true;
-    for (let inputIdentifier in updatedAddForm) {
-      formValid = updatedAddForm[inputIdentifier].valid && formValid;
+    for (let inputIdentifier in updatedAddForm[type]) {
+      formValid = updatedAddForm[type][inputIdentifier].valid && formValid;
     }
 
     this.setState({
@@ -158,17 +262,26 @@ class NewData extends Component {
   };
 
   render() {
-    const formElementsArray = [];
-    for (let key in this.state.addForm) {
-      formElementsArray.push({
+    const addressElementsArray = [];
+    for (let key in this.state.addForm.address) {
+      addressElementsArray.push({
         id: key,
-        config: this.state.addForm[key],
+        config: this.state.addForm.address[key],
+      });
+    }
+
+    const mortgageElementsArray = [];
+    for (let key in this.state.addForm.mortgage) {
+      mortgageElementsArray.push({
+        id: key,
+        config: this.state.addForm.mortgage[key],
       });
     }
 
     let form = (
       <form onSubmit={this.addHandler}>
-        {formElementsArray.map((formElement) => (
+        <p>Address</p>
+        {addressElementsArray.map((formElement) => (
           <Input
             key={formElement.id}
             elementType={formElement.config.elementType}
@@ -177,7 +290,24 @@ class NewData extends Component {
             invalid={!formElement.config.valid}
             shouldValidate={formElement.config.validation}
             touched={formElement.config.touched}
-            changed={(event) => this.inputChangedHandler(event, formElement.id)}
+            changed={(event) =>
+              this.inputChangedHandler(event, "address", formElement.id)
+            }
+          />
+        ))}
+        <p>Mortgage</p>
+        {mortgageElementsArray.map((formElement) => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
+            changed={(event) =>
+              this.inputChangedHandler(event, "mortgage", formElement.id)
+            }
           />
         ))}
         <Button
