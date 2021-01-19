@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Aux from "../../hoc/Hoc";
 import PropertiesOverview from "../../components/PropertiesOverview/PropertiesOverview";
-import axios from '../../axios-db'
+import axios from "../../axios-db";
 import classes from "./Dashboard.module.css";
 
 class Dashboard extends Component {
@@ -14,10 +14,10 @@ class Dashboard extends Component {
         montlyPayment: null,
         payments: {
           principal: [],
-          interest: []
-        }
-      }
-    ]
+          interest: [],
+        },
+      },
+    ],
   };
 
   componentDidMount() {
@@ -45,40 +45,29 @@ class Dashboard extends Component {
           //   }
           // })
         }
-        console.log(this.state)
-      }
-      )
-
-      
-
+      })
+      .then(() => {
+        console.log(this.state);
+      });
   }
 
   updatePayments = (index) => {
-    this.setState(prevState => {
-      const list = prevState.properties.map((property, j) => {
-        if (j === index) {
-          let payments, monthlyPayment = this.calculateMonthly(property.mortgage);
-          property.payments = payments;
-          property.monthlyPayment = monthlyPayment;
-          let temp = {
-            payments: payments,
-            monthlyPayment: monthlyPayment
-          };
-          return temp
-        } else {
-          return property;
-        }
-      });
-      return list;
-    }
-    )
-  }
+    let tempProperties = { ...this.state.properties };
+    let { payments, monthlyPayment } = this.calculateMonthly(
+      tempProperties[index].mortgage
+    );
+    console.log(payments);
+    console.log(monthlyPayment);
+    tempProperties[index].payments = payments;
+    tempProperties[index].monthlyPayment = monthlyPayment;
+
+    this.setState({ properties: tempProperties });
+  };
 
   calculateMonthly = (mortgageValues) => {
     console.log(mortgageValues);
-    const amountBorrowed =
-      mortgageValues.price - mortgageValues.downPayment;
-    const monthlyPayment =
+    const amountBorrowed = mortgageValues.price - mortgageValues.downPayment;
+    let monthlyPayment =
       ((mortgageValues.interestRate / 100 / 12) * amountBorrowed) /
       (1 -
         Math.pow(
@@ -105,12 +94,12 @@ class Dashboard extends Component {
 
     let payments = {
       principal: principal,
-      interest: interest
-    }
+      interest: interest,
+    };
 
     monthlyPayment = monthlyPayment.toFixed(2);
 
-    return payments, monthlyPayment;
+    return { payments, monthlyPayment };
 
     // this.setState({
     //   monthlyPayment: monthlyPayment.toFixed(2),
@@ -119,14 +108,10 @@ class Dashboard extends Component {
     //     interest: interest,
     //   },
     // });
-  }
+  };
 
   render() {
-    return (
-      <Aux>
-        Dashboard
-      </Aux>
-    );
+    return <Aux>Dashboard</Aux>;
   }
 }
 
